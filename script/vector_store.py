@@ -65,7 +65,7 @@ class VectorStore:
                 print(f'Successfully added {len(documents)} documents to vector store')
                 print(f'Total documents in collection: {self.collection.count()}')
             
-            except:
+            except Exception as e:
                 print(f'Error adding documents to vector store: {e}')
                 raise
 
