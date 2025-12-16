@@ -8,3 +8,4 @@ print(len(wiki_corpus))
 
 local_data = LocalData()
 local_data.save_wiki_corpus_local(search_text, wiki_corpus)
+
