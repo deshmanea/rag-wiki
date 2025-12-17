@@ -36,6 +36,7 @@ class ChunkDocWithStrategy:
         )
         chunks = splitter.split_documents(docs)
         print(len(chunks))
+        return chunks
         
 
 if __name__ == '__main__':

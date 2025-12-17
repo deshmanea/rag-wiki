@@ -6,7 +6,7 @@ from global_var import Constant
 
 class VectorStore:
 
-    def __init__(self, collection_name = Constant.COLLECTION_NAME, persist_directory = Constant.PERSIST_DB_PATH):
+    def __init__(self, collection_name = Constant.COLLECTION_NAME , persist_directory = Constant.PERSIST_DB_PATH):
 
         self.collection_name = collection_name
         self.persist_directory = persist_directory
@@ -44,6 +44,7 @@ class VectorStore:
 
         for i, (doc, embedding) in enumerate(zip(documents, embeddings)):
             doc_id = f'doc_{uuid.uuid4().hex[:8]}'
+
             ids.append(doc_id)
 
             metadata = dict(doc.metadata)
@@ -54,20 +55,20 @@ class VectorStore:
             documents_text.append(doc.page_content)
             embeddings_list.append(embedding.tolist())
 
-            try:
-                self.collection.add(
-                    ids = ids,
-                    embeddings = embeddings_list,
-                    metadatas = metadatas,
-                    documents = documents_text
-                )
+        try:
+            self.collection.add(
+                ids = ids,
+                embeddings = embeddings_list,
+                metadatas = metadatas,
+                documents = documents_text
+            )
 
-                print(f'Successfully added {len(documents)} documents to vector store')
-                print(f'Total documents in collection: {self.collection.count()}')
-            
-            except Exception as e:
-                print(f'Error adding documents to vector store: {e}')
-                raise
+            print(f'Successfully added {len(documents)} documents to vector store')
+            print(f'Total documents in collection: {self.collection.count()}')
+        
+        except Exception as e:
+            print(f'Error adding documents to vector store: {e}')
+            raise
 
 
 if __name__ == '__main__':

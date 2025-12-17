@@ -19,4 +19,4 @@ class WikiData:
             except wikipedia.exceptions.DisambiguationError:
                 print(f"Let's skip page")
 
-        return ''.join(wiki_content)
+        return wiki_content
