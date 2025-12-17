@@ -29,9 +29,9 @@ class ChunkDocWithStrategy:
     def chunk_documents(self, docs):
         chunks = []
         splitter = RecursiveCharacterTextSplitter(
-            chunk_size = 500,
-            chunk_overlap = 50,
-            length_function=len,
+            chunk_size = Constant.CHUNK_SIZE,
+            chunk_overlap = Constant.CHUNK_OVERLAP,
+            length_function = len,
             separators=["\n\n","\n"," " ,""]
         )
         chunks = splitter.split_documents(docs)

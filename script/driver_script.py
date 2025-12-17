@@ -42,8 +42,17 @@ vector_store.add_documents(chunks, embeddings)
 ### =========== Retrieval==============================================#
 
 retriever = Retriever(embedder, vector_store, top_k=3)
-
 results = retriever.retrieve("Who created the statue of David?")
+
+#============= Deduplicate =============================================#
+unique = []
+seen = set()
+
 for r in results:
-    print("----")
-    print(r["content"])
+    key = r['content'][:Constant.RESULT_LENGTH]   # 120-char
+    if key not in seen:
+        seen.add(key)
+        unique.append(r['content'])
+
+for res in unique:
+    print(res)

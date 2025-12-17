@@ -1,6 +1,7 @@
+from global_var import Constant
 
 class Retriever:
-    def __init__(self, embedder, vector_store, top_k = 3):
+    def __init__(self, embedder, vector_store, top_k = Constant.TOP_K):
         self.embedder = embedder
         self.vector_store = vector_store
         self.top_k = top_k
@@ -22,10 +23,16 @@ class Retriever:
         # 3. format results
         retrieved_docs = []
         for i in range(len(results["documents"][0])):
-            retrieved_docs.append({
-                "content": results["documents"][0][i],
-                "metadata": results["metadatas"][0][i],
-                "distance": results["distances"][0][i]
-            })
+            distance = results["distances"][0][i]
+            similarity = 1 - distance
 
+            if similarity >= Constant.SCORE_THRESHOLD:
+                retrieved_docs.append({
+                    "content": results["documents"][0][i],
+                    "metadata": results["metadatas"][0][i],
+                    "distance": results["distances"][0][i],
+                    "similarity": 1- distance,
+                    "rank": i + 1
+                    })
+                        
         return retrieved_docs
