@@ -6,11 +6,12 @@ from embed_space import EmbeddingManager
 from utils import sanitize_collection_name
 from retriever import Retriever
 from global_var import Constant
+from llm_impl import RAGGenerator
 
 ### =========== Get and Save RAW data ==================================#
 
 search_text = 'David Michelangelo'
-
+print(f"Collecting corpus for -> '{search_text}'")
 raw_corpus_name = sanitize_collection_name(search_text)
 wiki_data = WikiData()
 wiki_corpus = wiki_data.get_wiki_corpus(search_text)
@@ -21,7 +22,7 @@ for i, page_text in enumerate(wiki_corpus):
     file_name = f'{raw_corpus_name}_{i}'
     local_data.save_wiki_corpus_local(file_name, page_text)
 
-### =========== Chunk the RAW data ===================================#
+### =========== Chunk the RAW data ====================================#
 
 ch = ChunkDocWithStrategy()
 chunks = ch.chunk_documents(wiki_corpus)
@@ -42,7 +43,7 @@ vector_store.add_documents(chunks, embeddings)
 retriever = Retriever(embedder, vector_store, top_k=3)
 results = retriever.retrieve("Who created the statue of David?")
 
-#============= Deduplicate =============================================#
+### =========== Deduplicate ===========================================#
 unique = []
 seen = set()
 
@@ -52,8 +53,10 @@ for r in results:
         seen.add(key)
         unique.append(r['content'])
 
-for res in unique:
-    print("CONTENT:", r["content"][:120])
-    print("METADATA:", r["metadata"])
-    print("SCORE:", r["similarity"])
-    print("-" * 40)
+### ========== LLM integration ========================================#
+
+rag_generation = RAGGenerator(retriever)
+
+query = 'Who created the statue of David?'
+answer = rag_generation.generate(query)
+print(answer)

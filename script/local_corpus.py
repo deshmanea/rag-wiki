@@ -5,11 +5,11 @@ from global_var import Constant
 class LocalData:
 
     def save_wiki_corpus_local(self, search_text, wiki_corpus):
-        corpus_dir_path = Constant.CORPUS_DIR_PATH
+        corpus_dir_path = Path(Constant.CORPUS_DIR_PATH)
         file_name =  search_text + Constant.JSON_EXTENTION
-        file_path = corpus_dir_path + "/" + file_name
-        print(Path.cwd())
-        corpus_file = Path(file_path)
+        corpus_file = corpus_dir_path / file_name 
+
+        corpus_file.parent.mkdir(parents=True, exist_ok=True)     
 
         wiki_corpus_json = {
             "metadata": wiki_corpus.metadata,
@@ -20,8 +20,8 @@ class LocalData:
             print(f'Corpus file {file_name} exists, skipping append !!')
         else:
             print(f'Writing Corpus file {file_name}')
-            with open(file_path, "w") as json_file:
-                json.dump(wiki_corpus_json, json_file, indent=4)
+            with open(corpus_file, "w", encoding="utf-8") as json_file:
+                json.dump(wiki_corpus_json, json_file, indent=4, ensure_ascii=False)
 
 
 if __name__ == "__main__":

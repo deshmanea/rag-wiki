@@ -21,3 +21,4 @@ class Constant:
 
      # LLM
      MAX_CONTEXT_LENGTH = 2000
+     LLM_MODEL = 'tinyllama'
