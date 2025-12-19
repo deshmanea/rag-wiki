@@ -2,7 +2,7 @@ import pathlib
 from global_var import Constant
 from langchain_community.document_loaders import TextLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-
+from langchain_core.documents import Document
 
 class ChunkDocWithStrategy:
 
@@ -27,6 +27,9 @@ class ChunkDocWithStrategy:
         return all_file_text
 
     def chunk_documents(self, docs):
+
+        print(docs[0].page_content[:200])
+
         chunks = []
         splitter = RecursiveCharacterTextSplitter(
             chunk_size = Constant.CHUNK_SIZE,
@@ -34,7 +37,21 @@ class ChunkDocWithStrategy:
             length_function = len,
             separators=["\n\n","\n"," " ,""]
         )
-        chunks = splitter.split_documents(docs)
+        split_chunks = splitter.split_documents(docs)
+        for i , text in enumerate(split_chunks):
+            chunk_metadata = dict(text.metadata)
+            chunk_metadata.update({
+                "chunk_index": i,
+                "chunk_total": len(split_chunks),
+                "chunk_id": f'{text.metadata.get('page_id')}_{i}'
+            })
+
+            chunks.append(
+                Document(
+                    page_content=text.page_content,
+                    metadata=chunk_metadata
+                )
+            )
         print(len(chunks))
         return chunks
         

@@ -3,7 +3,7 @@ class Constant:
      
      # General
      CORPUS_DIR_PATH = 'rag-wiki/corpus'
-     TEXT_EXTENTION = '.txt'
+     JSON_EXTENTION = '.json'
      MODEL_NAME = 'all-miniLM-L6-v2'
      PERSIST_DB_PATH = 'rag-wiki/vector_db'
      COLLECTION_NAME= 'wiki_art_history'
@@ -18,3 +18,6 @@ class Constant:
      # Result
      RESULT_LENGTH = 120
      TOP_K = 8
+
+     # LLM
+     MAX_CONTEXT_LENGTH = 2000

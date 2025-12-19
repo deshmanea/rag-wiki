@@ -1,3 +1,4 @@
+from langchain_core.documents import Document
 import wikipedia
 
 class WikiData:
@@ -6,17 +7,28 @@ class WikiData:
         titles = wikipedia.search(search_text)
         print(len(titles))
 
-        wiki_content = []
+        documents = []
         for title in titles:
             try:
                 page = wikipedia.page(title)
-                print("Title : ", page.title)
-                page_content = page.content
-                print(len(page_content))
-                wiki_content.append(page_content)
+
+                documents.append(
+                    Document(
+                        page_content=page.content,
+                        metadata={
+                            "source": "wikipedia",
+                            "title": page.title,
+                            "url": page.url,
+                            "page_id": page.pageid,
+                            "search_query": search_text
+
+                        }
+                    )
+                )
+
             except wikipedia.exceptions.PageError:
                 print(f"No page with -> {title}")
             except wikipedia.exceptions.DisambiguationError:
                 print(f"Let's skip page")
 
-        return wiki_content
+        return documents

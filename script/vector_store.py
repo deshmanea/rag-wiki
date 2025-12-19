@@ -3,6 +3,7 @@ import numpy as np
 import uuid
 import chromadb
 from global_var import Constant
+import hashlib
 
 class VectorStore:
 
@@ -43,7 +44,14 @@ class VectorStore:
         embeddings_list = []
 
         for i, (doc, embedding) in enumerate(zip(documents, embeddings)):
-            doc_id = f'doc_{uuid.uuid4().hex[:8]}'
+            # doc_id = f'doc_{uuid.uuid4().hex[:8]}'
+
+            raw_id = f"{doc.metadata['source']}|" \
+                     f"{doc.metadata['page_id']}|" \
+                     f"{doc.page_content}"
+                    
+            content_hash = hashlib.sha256(raw_id.encode("utf-8")).hexdigest()
+            doc_id = f"wiki_{content_hash}"
 
             ids.append(doc_id)
 

@@ -24,9 +24,7 @@ for i, page_text in enumerate(wiki_corpus):
 ### =========== Chunk the RAW data ===================================#
 
 ch = ChunkDocWithStrategy()
-files=ch.get_all_files_from_folder()
-full_text = ch.load_documents(files)
-chunks = ch.chunk_documents(full_text)
+chunks = ch.chunk_documents(wiki_corpus)
 
 ### =========== Generate Embeddings ===================================#
 
@@ -55,4 +53,7 @@ for r in results:
         unique.append(r['content'])
 
 for res in unique:
-    print(res)
+    print("CONTENT:", r["content"][:120])
+    print("METADATA:", r["metadata"])
+    print("SCORE:", r["similarity"])
+    print("-" * 40)

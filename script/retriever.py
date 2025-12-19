@@ -17,7 +17,8 @@ class Retriever:
         # 2. query vector DB
         results = self.vector_store.collection.query(
             query_embeddings=[query_embedding.tolist()],
-            n_results=self.top_k
+            n_results=self.top_k,
+            include=["documents", "metadatas", "distances"]
         )
 
         # 3. format results
