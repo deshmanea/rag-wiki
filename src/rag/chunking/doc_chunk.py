@@ -11,7 +11,7 @@ class ChunkDocWithStrategy:
         doc_list = list(doc_path.rglob('*'))
         return doc_list
     
-    # Since these all files are text skipping loader
+    # OPTIONAL offline Support : Since these all files are text skipping loader
 
     def load_documents(self, files):
         all_file_text = []
@@ -43,7 +43,7 @@ class ChunkDocWithStrategy:
             chunk_metadata.update({
                 "chunk_index": i,
                 "chunk_total": len(split_chunks),
-                "chunk_id": f'{text.metadata.get('page_id')}_{i}'
+                "chunk_id": f"{text.metadata.get('page_id')}_{i}"
             })
 
             chunks.append(
